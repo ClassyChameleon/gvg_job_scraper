@@ -37,11 +37,19 @@ class _MainAppState extends State<MainApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 10,
+              ),
               TextButton(
                 onPressed: onPressed,
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStatePropertyAll<Color>(Colors.green),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        side: BorderSide(color: Colors.black, width: 4.0)),
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -85,31 +93,33 @@ class _MainAppState extends State<MainApp> {
                 child: ListView.builder(
                   itemCount: keywords.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 50,
-                            child: IconButton(
-                              onPressed: () {
-                                keywords.remove(keywords
-                                    .elementAt(keywords.length - index - 1));
-                                setState(() {});
-                              },
-                              icon: Icon(Icons.close),
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: IconButton(
+                            onPressed: () {
+                              keywords.remove(keywords
+                                  .elementAt(keywords.length - index - 1));
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.close),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50,
+                          width: 320,
+                          child: ListTile(
+                            title: Text(
+                              keywords.elementAt(keywords.length - index - 1),
+                              maxLines: 3,
+                              overflow: TextOverflow.fade,
                             ),
                           ),
-                          SizedBox(
-                            width: 320,
-                            child: ListTile(
-                              title: Text(
-                                keywords.elementAt(keywords.length - index - 1),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     );
                   },
                 ),
