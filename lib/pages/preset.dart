@@ -13,14 +13,17 @@ class Preset extends StatefulWidget {
 
 class _PresetState extends State<Preset> {
   Set<String> keywords = {'1', '2', '3', '4', '5'};
-  List<ValueItem> websites = <ValueItem>[ValueItem(label: 'alfred.is')];
-  final textController = TextEditingController();
+  List<ValueItem> websites = <ValueItem>[
+    ValueItem(label: 'alfred.is'),
+  ];
+  final keywordTextController = TextEditingController();
+  final keywordEditTextController = TextEditingController();
   final MultiSelectController _controller = MultiSelectController();
   bool selectAllWebsites = true;
 
   @override
   void dispose() {
-    textController.dispose();
+    keywordTextController.dispose();
     super.dispose();
   }
 
@@ -66,7 +69,7 @@ class _PresetState extends State<Preset> {
                 children: [
                   Expanded(
                     child: TextField(
-                      controller: textController,
+                      controller: keywordTextController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter new keyword...',
@@ -118,7 +121,23 @@ class _PresetState extends State<Preset> {
                         height: 50,
                         width: 32,
                         child: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            keywordEditTextController.text =
+                                keywords.elementAt(keywords.length - index - 1);
+                            await showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) => SimpleDialog(
+                                title: Text('Edit search word'),
+                                children: [
+                                  TextField(
+                                      autofocus: true,
+                                      controller: keywordEditTextController)
+                                ],
+                              ),
+                            );
+                            keywords.remove(keywords
+                                .elementAt(keywords.length - index - 1));
+                            keywords.add(keywordEditTextController.text);
                             setState(() {});
                           },
                           icon: Icon(Icons.edit),
@@ -141,8 +160,8 @@ class _PresetState extends State<Preset> {
   }
 
   addKeyword() {
-    keywords.add(textController.text);
-    textController.clear();
+    keywords.add(keywordTextController.text);
+    keywordTextController.clear();
     setState(() {});
   }
 
