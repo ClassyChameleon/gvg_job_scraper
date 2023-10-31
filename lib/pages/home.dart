@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:gvg_job_scraper/components/app_bar.dart';
+import 'package:gvg_job_scraper/widgets/app_bar.dart';
+import 'package:gvg_job_scraper/widgets/button_preset.dart';
+import 'package:gvg_job_scraper/pages/presets.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,6 +20,7 @@ class _HomeState extends State<Home> {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 8.0),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,58 +37,39 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: onPressed,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          elevation: 4,
-                          padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                        ),
-                        child: Text(
-                          'Choose search preset',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+            SizedBox(height: 80.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    ButtonPreset(
+                      onPressed: chooseSearchPreset,
+                      childText: 'Choose search preset',
+                    ),
+                    Text(
+                      'None selected',
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 32,
+                ),
+                Column(
+                  children: [
+                    ButtonPreset(
+                      onPressed: onPressed,
+                      childText: 'Search',
+                      textStyle: TextStyle(
+                        fontSize: 64,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                      Text(
-                        'None selected',
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 32,
-                  ),
-                  Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: onPressed,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          elevation: 4,
-                        ),
-                        child: Text(
-                          'Search',
-                          style: TextStyle(
-                            fontSize: 64,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
@@ -94,4 +78,7 @@ class _HomeState extends State<Home> {
   }
 
   void onPressed() {}
+  void chooseSearchPreset() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Presets()));
+  }
 }
