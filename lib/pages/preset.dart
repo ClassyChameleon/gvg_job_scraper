@@ -12,10 +12,11 @@ class Preset extends StatefulWidget {
 }
 
 class _PresetState extends State<Preset> {
-  Set<String> keywords = {'1', '2', '3', '4', '5'};
+  Set<String> keywords = {};
   List<ValueItem> websites = <ValueItem>[
     ValueItem(label: 'alfred.is'),
   ];
+  final titleTextController = TextEditingController();
   final keywordTextController = TextEditingController();
   final keywordEditTextController = TextEditingController();
   final MultiSelectController _controller = MultiSelectController();
@@ -37,8 +38,12 @@ class _PresetState extends State<Preset> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 10,
+            TextField(
+              controller: keywordTextController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Preset name',
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +113,7 @@ class _PresetState extends State<Preset> {
                       ),
                       SizedBox(
                         height: 50,
-                        width: 320,
+                        width: MediaQuery.of(context).size.width - 80,
                         child: ListTile(
                           title: Text(
                             keywords.elementAt(keywords.length - index - 1),
@@ -130,6 +135,7 @@ class _PresetState extends State<Preset> {
                                 title: Text('Edit search word'),
                                 children: [
                                   TextField(
+                                      textAlign: TextAlign.center,
                                       autofocus: true,
                                       controller: keywordEditTextController)
                                 ],
@@ -151,7 +157,7 @@ class _PresetState extends State<Preset> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ButtonPreset(
-                  onPressed: onPressed, childText: 'Create Preset'),
+                  onPressed: createPreset, childText: 'Create Preset'),
             )
           ],
         ),
@@ -166,4 +172,6 @@ class _PresetState extends State<Preset> {
   }
 
   void onPressed() {}
+
+  void createPreset() {}
 }
