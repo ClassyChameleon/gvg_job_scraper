@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
 
   void onPressed() {}
   void chooseSearchPreset() async {
-    final SearchPreset search = await Navigator.push(
+    final SearchPreset? search = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Presets()));
     setState(() {
       selectedPreset = search;
