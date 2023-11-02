@@ -47,12 +47,15 @@ class _PresetsState extends State<Presets> {
             itemBuilder: (context, index) {
               return Row(
                 children: [
+                  // DELETE PRESET
                   SizedBox(
                     height: 50,
                     width: 32,
                     child: IconButton(
                       onPressed: () {
-                        setState(() {});
+                        setState(() {
+                          searchPresets.removeAt(index);
+                        });
                       },
                       icon: Icon(Icons.close),
                     ),
@@ -60,6 +63,7 @@ class _PresetsState extends State<Presets> {
                   SizedBox(
                     height: 50,
                     width: MediaQuery.of(context).size.width - 64,
+                    // EDIT PRESET
                     child: ListTile(
                       onTap: () async {
                         final newPreset = await Navigator.push(
