@@ -6,7 +6,8 @@ import 'package:gvg_job_scraper/widgets/button_preset.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class Preset extends StatefulWidget {
-  const Preset({super.key});
+  SearchPreset? searchPreset;
+  Preset({super.key, required this.searchPreset});
 
   @override
   State<Preset> createState() => _PresetState();
@@ -16,7 +17,9 @@ class _PresetState extends State<Preset> {
   Set<String> keywords = {};
   List<ValueItem> websites = <ValueItem>[
     ValueItem(label: 'alfred.is'),
+    ValueItem(label: 'tvinna.is'),
   ];
+  List<ValueItem> selectedWebsites = [];
   final titleTextController = TextEditingController();
   final keywordTextController = TextEditingController();
   final keywordEditTextController = TextEditingController();
@@ -31,6 +34,17 @@ class _PresetState extends State<Preset> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.searchPreset != null) {
+      titleTextController.text = widget.searchPreset!.name;
+      for (String i in widget.searchPreset!.keywords) {
+        keywords.add(i);
+      }
+      for (String i in widget.searchPreset!.websites) {
+        selectedWebsites.add(
+          ValueItem(label: i),
+        );
+      }
+    }
     return Scaffold(
       appBar: GlobalAppBar(),
       body: Padding(
@@ -52,9 +66,16 @@ class _PresetState extends State<Preset> {
                 Text('Search from all available websites'),
                 Checkbox(
                     value: selectAllWebsites,
-                    onChanged: ((bool) {
-                      selectAllWebsites = bool!;
-                      setState(() {});
+                    onChanged: ((booly) {
+                      selectAllWebsites = booly!;
+                      setState(() {
+                        if (!selectAllWebsites) {
+                          selectedWebsites.clear();
+                          for (ValueItem i in websites) {
+                            selectedWebsites.add(i);
+                          }
+                        }
+                      });
                     })),
               ],
             ),
@@ -64,7 +85,7 @@ class _PresetState extends State<Preset> {
                 hint: 'Select websites to search from',
                 onOptionSelected: (List<ValueItem> selectedOptions) {},
                 options: websites,
-                selectedOptions: websites,
+                selectedOptions: selectedWebsites,
               ),
             SizedBox(
               height: 60.0,
@@ -177,8 +198,8 @@ class _PresetState extends State<Preset> {
 
   void createPreset() {
     List<String> webs = [];
-    for (int i = 0; i < websites.length; i++) {
-      webs.add(websites[i].label);
+    for (int i = 0; i < selectedWebsites.length; i++) {
+      webs.add(selectedWebsites[i].label);
     }
     SearchPreset newPreset =
         SearchPreset(titleTextController.text, keywords.toList(), webs);
