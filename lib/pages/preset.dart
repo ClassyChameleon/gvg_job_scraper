@@ -44,6 +44,10 @@ class _PresetState extends State<Preset> {
           ValueItem(label: i),
         );
       }
+      widget.searchPreset = null;
+      if (selectedWebsites.length != websites.length) {
+        selectAllWebsites = false;
+      }
     }
     return Scaffold(
       appBar: GlobalAppBar(),
@@ -79,11 +83,13 @@ class _PresetState extends State<Preset> {
                     })),
               ],
             ),
-            // Show dropdown only if not selecting all websites
+            // WEBSITE DROPDOWN
             if (!selectAllWebsites)
               MultiSelectDropDown(
                 hint: 'Select websites to search from',
-                onOptionSelected: (List<ValueItem> selectedOptions) {},
+                onOptionSelected: (List<ValueItem> selectedOptions) {
+                  selectedWebsites = selectedOptions;
+                },
                 options: websites,
                 selectedOptions: selectedWebsites,
               ),
@@ -95,6 +101,7 @@ class _PresetState extends State<Preset> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
+                    // ENTER NEW KEYWORD
                     child: TextField(
                       controller: keywordTextController,
                       decoration: InputDecoration(
@@ -121,6 +128,7 @@ class _PresetState extends State<Preset> {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
+                      // REMOVE KEYWORD
                       SizedBox(
                         height: 50,
                         width: 32,
@@ -133,6 +141,7 @@ class _PresetState extends State<Preset> {
                           icon: Icon(Icons.close),
                         ),
                       ),
+                      // EDIT KEYWORD
                       SizedBox(
                         height: 50,
                         width: MediaQuery.of(context).size.width - 64,
@@ -203,6 +212,7 @@ class _PresetState extends State<Preset> {
     }
     SearchPreset newPreset =
         SearchPreset(titleTextController.text, keywords.toList(), webs);
+    print(selectedWebsites.toString());
     Navigator.pop(context, newPreset);
   }
 }
