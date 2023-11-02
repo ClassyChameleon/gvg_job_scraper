@@ -65,22 +65,29 @@ class _PresetsState extends State<Presets> {
                     width: MediaQuery.of(context).size.width - 64,
                     // EDIT PRESET
                     child: ListTile(
-                      onTap: () async {
-                        final newPreset = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Preset(
-                                    searchPreset: searchPresets[index])));
-                        setState(() {
-                          searchPresets[index] = newPreset;
-                        });
-                      },
+                      onTap: () {},
                       title: Text(
                         searchPresets.elementAt(index).name,
                         maxLines: 3,
                         overflow: TextOverflow.fade,
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 32,
+                    child: IconButton(
+                        onPressed: () async {
+                          final newPreset = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Preset(
+                                      searchPreset: searchPresets[index])));
+                          setState(() {
+                            searchPresets[index] = newPreset;
+                          });
+                        },
+                        icon: Icon(Icons.edit)),
                   ),
                 ],
               );
