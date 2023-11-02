@@ -30,9 +30,12 @@ class _PresetsState extends State<Presets> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ButtonPreset(
-                onPressed: () {
-                  Navigator.push(context,
+                onPressed: () async {
+                  final newPreset = await Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Preset()));
+                  setState(() {
+                    searchPresets.add(newPreset);
+                  });
                 },
                 childText: 'Create new preset'),
           ),

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:gvg_job_scraper/classes/search_preset.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/button_preset.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -39,7 +40,7 @@ class _PresetState extends State<Preset> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextField(
-              controller: keywordTextController,
+              controller: titleTextController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Preset name',
@@ -173,5 +174,13 @@ class _PresetState extends State<Preset> {
 
   void onPressed() {}
 
-  void createPreset() {}
+  void createPreset() {
+    List<String> webs = [];
+    for (int i = 0; i < websites.length; i++) {
+      webs.add(websites[i].label);
+    }
+    SearchPreset newPreset =
+        SearchPreset(titleTextController.text, keywords.toList(), webs);
+    Navigator.pop(context, newPreset);
+  }
 }
