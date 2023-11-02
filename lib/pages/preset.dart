@@ -114,20 +114,9 @@ class _PresetState extends State<Preset> {
                       ),
                       SizedBox(
                         height: 50,
-                        width: MediaQuery.of(context).size.width - 80,
+                        width: MediaQuery.of(context).size.width - 64,
                         child: ListTile(
-                          title: Text(
-                            keywords.elementAt(keywords.length - index - 1),
-                            maxLines: 3,
-                            overflow: TextOverflow.fade,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                        width: 32,
-                        child: IconButton(
-                          onPressed: () async {
+                          onTap: () async {
                             keywordEditTextController.text =
                                 keywords.elementAt(keywords.length - index - 1);
                             await showDialog<void>(
@@ -155,7 +144,11 @@ class _PresetState extends State<Preset> {
                               keywords = tKeywords;
                             });
                           },
-                          icon: Icon(Icons.edit),
+                          title: Text(
+                            keywords.elementAt(keywords.length - index - 1),
+                            maxLines: 3,
+                            overflow: TextOverflow.fade,
+                          ),
                         ),
                       ),
                     ],
