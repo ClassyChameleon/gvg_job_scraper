@@ -65,7 +65,9 @@ class _PresetsState extends State<Presets> {
                     width: MediaQuery.of(context).size.width - 64,
                     // EDIT PRESET
                     child: ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context, searchPresets[index]);
+                      },
                       title: Text(
                         searchPresets.elementAt(index).name,
                         maxLines: 3,

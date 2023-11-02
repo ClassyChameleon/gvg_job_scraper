@@ -1,5 +1,5 @@
 class SearchPreset {
-  String name;
+  String name = '';
   List<String> keywords;
   List<String> websites;
 

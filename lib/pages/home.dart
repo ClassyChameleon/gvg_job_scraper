@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:gvg_job_scraper/classes/search_preset.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/button_preset.dart';
 import 'package:gvg_job_scraper/pages/presets.dart';
@@ -13,6 +14,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  SearchPreset? selectedPreset;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,9 +51,14 @@ class _HomeState extends State<Home> {
                       onPressed: chooseSearchPreset,
                       childText: 'Choose search preset',
                     ),
-                    Text(
-                      'None selected',
-                    ),
+                    Text((() {
+                      final selectedPreset = this.selectedPreset;
+                      if (selectedPreset != null) {
+                        return selectedPreset.name;
+                      } else {
+                        return 'None selected';
+                      }
+                    }())),
                   ],
                 ),
                 SizedBox(
@@ -78,7 +86,11 @@ class _HomeState extends State<Home> {
   }
 
   void onPressed() {}
-  void chooseSearchPreset() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Presets()));
+  void chooseSearchPreset() async {
+    final SearchPreset search = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Presets()));
+    setState(() {
+      selectedPreset = search;
+    });
   }
 }
