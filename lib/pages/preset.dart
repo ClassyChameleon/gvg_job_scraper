@@ -142,10 +142,18 @@ class _PresetState extends State<Preset> {
                                 ],
                               ),
                             );
-                            keywords.remove(keywords
-                                .elementAt(keywords.length - index - 1));
-                            keywords.add(keywordEditTextController.text);
-                            setState(() {});
+                            setState(() {
+                              int len = keywords.length;
+                              Set<String> tKeywords = {};
+                              for (int i = 0; i < len; i++) {
+                                if (i == len - index - 1) {
+                                  tKeywords.add(keywordEditTextController.text);
+                                } else {
+                                  tKeywords.add(keywords.elementAt(i));
+                                }
+                              }
+                              keywords = tKeywords;
+                            });
                           },
                           icon: Icon(Icons.edit),
                         ),

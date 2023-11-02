@@ -57,7 +57,7 @@ class _PresetsState extends State<Presets> {
                   ),
                   SizedBox(
                     height: 50,
-                    width: 320,
+                    width: MediaQuery.of(context).size.width - 64,
                     child: ListTile(
                       title: Text(
                         searchPresets.elementAt(index).name,
