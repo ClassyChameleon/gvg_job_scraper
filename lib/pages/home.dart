@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/classes/search_preset.dart';
+import 'package:gvg_job_scraper/pages/search.dart';
 import 'package:gvg_job_scraper/searches/s_alfred.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/button_preset.dart';
@@ -69,7 +70,7 @@ class _HomeState extends State<Home> {
                 Column(
                   children: [
                     ButtonPreset(
-                      onPressed: onPressed,
+                      onPressed: beginSearch,
                       childText: 'Search',
                       textStyle: TextStyle(
                         fontSize: 64,
@@ -94,5 +95,14 @@ class _HomeState extends State<Home> {
     setState(() {
       selectedPreset = search;
     });
+  }
+
+  beginSearch() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Search(
+                  searchPreset: selectedPreset,
+                )));
   }
 }

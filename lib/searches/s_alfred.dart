@@ -8,13 +8,29 @@ import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<List<JobPreset>> scrapeAlfred(String keyword) async {
-  //Response response = await get(Uri.parse('https://userapi.alfred.is/api/v2/jobs?page=1&size=27&search=$keyword&translate=false'));
-  //Map data = jsonDecode(response.body);
+  List<JobPreset> results = [];
+  // Response response = await get(Uri.parse(
+  //     'https://userapi.alfred.is/api/v2/jobs?page=1&size=27&search=$keyword&translate=false'));
+  // Map data = jsonDecode(response.body);
 
   String jsonData = await rootBundle.loadString('assets/alfred.json');
   Map data = await json.decode(jsonData);
 
-  mapExtractor(data);
+  //mapIterator(data);
+  for (var i in data['jobs']) {
+    String slug = i['slug'];
+    results.add(JobPreset(
+        i['brand']['name'],
+        i['title'],
+        ["alfred.is/starf/$slug"],
+        DateTime.parse(i['created']),
+        i['deadline'] == null ? null : DateTime.parse(i['deadline'])));
+    //print(i['title']);
+    //print("alfred.is/starf/$slug");
+    //print(i['brand']['name']);
+  }
 
-  return [];
+  //print(data['jobs'][0]['deadline']);
+
+  return results;
 }

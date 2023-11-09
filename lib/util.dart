@@ -21,3 +21,14 @@ void mapIterator(Map d) {
   print('EXTRACTION COMPLETE');
   print('===============================');
 }
+
+void listIterator(List d) {
+  print('===============================');
+  print('BEGIN EXTRACTION');
+  print('===============================');
+  for (var e in d) {
+    print(e.toString());
+  }
+  print('EXTRACTION COMPLETE');
+  print('===============================');
+}
