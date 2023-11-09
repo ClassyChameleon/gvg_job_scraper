@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/classes/search_preset.dart';
+import 'package:gvg_job_scraper/searches/s_alfred.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/button_preset.dart';
 import 'package:gvg_job_scraper/pages/presets.dart';
@@ -18,6 +19,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    scrapeAlfred('forrit');
     return Scaffold(
       appBar: GlobalAppBar(),
       body: Center(
