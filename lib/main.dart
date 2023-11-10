@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/pages/home.dart';
+import 'package:gvg_job_scraper/searches/s_tvinna.dart';
 
 void main() {
   runApp(const MainApp());
@@ -26,6 +27,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
+    scrapeTvinna('delivery');
     return MaterialApp(routes: {
       '/': (context) => Home(),
     });

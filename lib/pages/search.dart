@@ -23,8 +23,8 @@ class _SearchState extends State<Search> {
     // 1. Remove duplicates
     //  a. start working on duplicates once any website returns data
     //  b. If duplicate found, add url and compare post time and deadline
-    Future<List<JobPreset>> alfredJobs = scrapeAlfred('forrit');
-    foundJobs.addAll(await alfredJobs);
+    Future<List<JobPreset>> a = scrapeAlfred('forrit');
+    foundJobs.addAll(await a);
     setState(() {});
   }
 
