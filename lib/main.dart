@@ -27,7 +27,6 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    scrapeTvinna('delivery');
     return MaterialApp(routes: {
       '/': (context) => Home(),
     });

@@ -1,6 +1,6 @@
 class JobPreset {
-  String companyName = '';
   String jobName = '';
+  String companyName = '';
   List<String> urls;
   DateTime? deadline;
   DateTime? earliestPosting;
