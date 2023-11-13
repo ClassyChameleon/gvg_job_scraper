@@ -90,6 +90,15 @@ class _SearchState extends State<Search> {
     }
   }
 
+  // Async operations may still be running after unmounting.
+  // This prevents errors and memory leaks once they finish and use setState
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (foundJobs.isEmpty) {

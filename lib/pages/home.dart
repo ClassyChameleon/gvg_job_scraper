@@ -15,6 +15,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<SearchPreset> presetList = [
+    SearchPreset('Web developer', ['html', 'css', 'javascript'],
+        ['alfred.is', 'tvinna.is']),
+    SearchPreset('Programmer', ['java', 'php', 'javascript'],
+        ['alfred.is', 'tvinna.is']),
+    SearchPreset('Database Manager', ['SQL', 'Postgres', 'javascript'],
+        ['alfred.is', 'tvinna.is']),
+    SearchPreset(
+        'Demo for mid-search adds',
+        ['Dýralæknir', 'Vestmannaeyjar', 'sálfræðing'],
+        ['alfred.is', 'tvinna.is']),
+    SearchPreset(
+        'Demo for no results',
+        ['æææææææææææææææ', 'ðððððððððððð', 'qqqqqqqqqqqqqqq'],
+        ['alfred.is', 'tvinna.is']),
+  ];
   SearchPreset selectedPreset = SearchPreset('None selected', [], []);
 
   @override
@@ -89,7 +105,21 @@ class _HomeState extends State<Home> {
   void onPressed() {}
   void chooseSearchPreset() async {
     final SearchPreset? search = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Presets()));
+        context,
+        MaterialPageRoute(
+          builder: (context) => Presets(
+            searchPresets: presetList,
+          ),
+        ));
+    // final List? presetResult = await Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => Presets(
+    //         searchPresets: presetList,
+    //       ),
+    //     ));
+    // final SearchPreset search = presetResult![0];
+    // presetList = presetResult[1];
     setState(() {
       if (search != null) {
         selectedPreset = search;

@@ -188,8 +188,7 @@ class _PresetState extends State<Preset> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ButtonPreset(
-                  onPressed: createPreset, childText: 'Create Preset'),
+              child: ButtonPreset(onPressed: createPreset, childText: 'Finish'),
             )
           ],
         ),

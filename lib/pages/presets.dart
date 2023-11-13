@@ -5,22 +5,14 @@ import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/button_preset.dart';
 
 class Presets extends StatefulWidget {
-  const Presets({super.key});
+  List<SearchPreset> searchPresets;
+  Presets({super.key, required this.searchPresets});
 
   @override
   State<Presets> createState() => _PresetsState();
 }
 
 class _PresetsState extends State<Presets> {
-  List<SearchPreset> searchPresets = [
-    SearchPreset('Web developer', ['html', 'css', 'javascript'],
-        ['alfred.is', 'jobs.com']),
-    SearchPreset(
-        'Programmer', ['java', 'php', 'javascript'], ['alfred.is', 'jobs.com']),
-    SearchPreset('Database Manager', ['SQL', 'Postgres', 'javascript'],
-        ['alfred.is', 'jobs.com']),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,14 +28,14 @@ class _PresetsState extends State<Presets> {
                       MaterialPageRoute(
                           builder: (context) => Preset(searchPreset: null)));
                   setState(() {
-                    searchPresets.add(newPreset);
+                    widget.searchPresets.add(newPreset);
                   });
                 },
                 childText: 'Create new preset'),
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: searchPresets.length,
+            itemCount: widget.searchPresets.length,
             itemBuilder: (context, index) {
               return Row(
                 children: [
@@ -54,7 +46,7 @@ class _PresetsState extends State<Presets> {
                     child: IconButton(
                       onPressed: () {
                         setState(() {
-                          searchPresets.removeAt(index);
+                          widget.searchPresets.removeAt(index);
                         });
                       },
                       icon: Icon(Icons.close),
@@ -66,10 +58,10 @@ class _PresetsState extends State<Presets> {
                     // EDIT PRESET
                     child: ListTile(
                       onTap: () {
-                        Navigator.pop(context, searchPresets[index]);
+                        Navigator.pop(context, widget.searchPresets[index]);
                       },
                       title: Text(
-                        searchPresets.elementAt(index).name,
+                        widget.searchPresets.elementAt(index).name,
                         maxLines: 3,
                         overflow: TextOverflow.fade,
                       ),
@@ -84,9 +76,10 @@ class _PresetsState extends State<Presets> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Preset(
-                                      searchPreset: searchPresets[index])));
+                                      searchPreset:
+                                          widget.searchPresets[index])));
                           setState(() {
-                            searchPresets[index] = newPreset;
+                            widget.searchPresets[index] = newPreset;
                           });
                         },
                         icon: Icon(Icons.edit)),
