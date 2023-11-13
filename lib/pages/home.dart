@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/classes/search_preset.dart';
 import 'package:gvg_job_scraper/pages/search.dart';
@@ -40,8 +38,8 @@ class _HomeState extends State<Home> {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 8.0),
-            Column(
+            const SizedBox(height: 8.0),
+            const Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -57,7 +55,7 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            SizedBox(height: 80.0),
+            const SizedBox(height: 80.0),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,15 +68,11 @@ class _HomeState extends State<Home> {
                     ),
                     Text((() {
                       final selectedPreset = this.selectedPreset;
-                      if (selectedPreset != null) {
-                        return selectedPreset.name;
-                      } else {
-                        return 'None selected';
-                      }
+                      return selectedPreset.name;
                     }())),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 32,
                 ),
                 Column(
@@ -86,7 +80,7 @@ class _HomeState extends State<Home> {
                     ButtonPreset(
                       onPressed: beginSearch,
                       childText: 'Search',
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         fontSize: 64,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

@@ -4,6 +4,7 @@ import 'package:gvg_job_scraper/pages/preset.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/button_preset.dart';
 
+// ignore: must_be_immutable
 class Presets extends StatefulWidget {
   List<SearchPreset> searchPresets;
   Presets({super.key, required this.searchPresets});
@@ -26,7 +27,8 @@ class _PresetsState extends State<Presets> {
                   final newPreset = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Preset(searchPreset: null)));
+                          builder: (context) =>
+                              const Preset(searchPreset: null)));
                   setState(() {
                     widget.searchPresets.add(newPreset);
                   });
@@ -49,7 +51,7 @@ class _PresetsState extends State<Presets> {
                           widget.searchPresets.removeAt(index);
                         });
                       },
-                      icon: Icon(Icons.close),
+                      icon: const Icon(Icons.close),
                     ),
                   ),
                   SizedBox(
@@ -82,7 +84,7 @@ class _PresetsState extends State<Presets> {
                             widget.searchPresets[index] = newPreset;
                           });
                         },
-                        icon: Icon(Icons.edit)),
+                        icon: const Icon(Icons.edit)),
                   ),
                 ],
               );

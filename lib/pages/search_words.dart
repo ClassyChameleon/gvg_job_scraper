@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
 
@@ -25,26 +24,27 @@ class _SearchWordsState extends State<SearchWords> {
       home: Scaffold(
         appBar: GlobalAppBar(),
         body: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               TextButton(
                 onPressed: onPressed,
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStatePropertyAll<Color>(Colors.green),
+                      const MaterialStatePropertyAll<Color>(Colors.green),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
-                        side: BorderSide(color: Colors.black, width: 4.0)),
+                        side:
+                            const BorderSide(color: Colors.black, width: 4.0)),
                   ),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Begin Search',
@@ -52,7 +52,7 @@ class _SearchWordsState extends State<SearchWords> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SizedBox(
@@ -65,7 +65,7 @@ class _SearchWordsState extends State<SearchWords> {
                     Expanded(
                       child: TextField(
                         controller: textController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Enter new keyword...',
                         ),
@@ -75,7 +75,7 @@ class _SearchWordsState extends State<SearchWords> {
                       children: [
                         IconButton(
                           onPressed: addKeyword,
-                          icon: Icon(Icons.add),
+                          icon: const Icon(Icons.add),
                         )
                       ],
                     ),
@@ -98,7 +98,7 @@ class _SearchWordsState extends State<SearchWords> {
                                   .elementAt(keywords.length - index - 1));
                               setState(() {});
                             },
-                            icon: Icon(Icons.close),
+                            icon: const Icon(Icons.close),
                           ),
                         ),
                         SizedBox(

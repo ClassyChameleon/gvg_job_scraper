@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/classes/job_preset.dart';
@@ -11,8 +9,8 @@ import 'package:gvg_job_scraper/widgets/default_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Search extends StatefulWidget {
-  SearchPreset searchPreset;
-  Search({super.key, required this.searchPreset});
+  final SearchPreset searchPreset;
+  const Search({super.key, required this.searchPreset});
 
   @override
   State<Search> createState() => _SearchState();

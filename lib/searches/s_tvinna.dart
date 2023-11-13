@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:gvg_job_scraper/classes/job_preset.dart';
-import 'package:gvg_job_scraper/util.dart';
 import 'package:http/http.dart';
-import 'package:path_provider/path_provider.dart';
 
 Future<List<JobPreset>> scrapeTvinna(String keyword, bool useLocalData) async {
   List<JobPreset> results = [];

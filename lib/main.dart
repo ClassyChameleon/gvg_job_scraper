@@ -1,8 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/pages/home.dart';
-import 'package:gvg_job_scraper/searches/s_tvinna.dart';
 
 void main() {
   runApp(const MainApp());
@@ -28,7 +25,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(routes: {
-      '/': (context) => Home(),
+      '/': (context) => const Home(),
     });
   }
 }

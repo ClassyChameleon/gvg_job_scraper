@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/classes/search_preset.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
@@ -6,8 +5,8 @@ import 'package:gvg_job_scraper/widgets/button_preset.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class Preset extends StatefulWidget {
-  SearchPreset? searchPreset;
-  Preset({super.key, required this.searchPreset});
+  final SearchPreset? searchPreset;
+  const Preset({super.key, required this.searchPreset});
 
   @override
   State<Preset> createState() => _PresetState();
@@ -16,15 +15,15 @@ class Preset extends StatefulWidget {
 class _PresetState extends State<Preset> {
   Set<String> keywords = {};
   List<ValueItem> websites = <ValueItem>[
-    ValueItem(label: 'alfred.is'),
-    ValueItem(label: 'tvinna.is'),
+    const ValueItem(label: 'alfred.is'),
+    const ValueItem(label: 'tvinna.is'),
   ];
   List<ValueItem> selectedWebsites = [];
   final titleTextController = TextEditingController();
   final keywordTextController = TextEditingController();
   final keywordEditTextController = TextEditingController();
-  final MultiSelectController _controller = MultiSelectController();
   bool selectAllWebsites = true;
+  bool startedFlag = true;
 
   @override
   void dispose() {
@@ -34,7 +33,8 @@ class _PresetState extends State<Preset> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.searchPreset != null) {
+    if (startedFlag) {
+      startedFlag = false;
       titleTextController.text = widget.searchPreset!.name;
       for (String i in widget.searchPreset!.keywords) {
         keywords.add(i);
@@ -44,7 +44,6 @@ class _PresetState extends State<Preset> {
           ValueItem(label: i),
         );
       }
-      widget.searchPreset = null;
       if (selectedWebsites.length != websites.length) {
         selectAllWebsites = false;
       }
@@ -52,14 +51,14 @@ class _PresetState extends State<Preset> {
     return Scaffold(
       appBar: GlobalAppBar(),
       body: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextField(
               controller: titleTextController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Preset name',
               ),
@@ -67,7 +66,7 @@ class _PresetState extends State<Preset> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Search from all available websites'),
+                const Text('Search from all available websites'),
                 Checkbox(
                     value: selectAllWebsites,
                     onChanged: ((booly) {
@@ -104,7 +103,7 @@ class _PresetState extends State<Preset> {
                     // ENTER NEW KEYWORD
                     child: TextField(
                       controller: keywordTextController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter new keyword...',
                       ),
@@ -114,7 +113,7 @@ class _PresetState extends State<Preset> {
                     children: [
                       IconButton(
                         onPressed: addKeyword,
-                        icon: Icon(Icons.add),
+                        icon: const Icon(Icons.add),
                       )
                     ],
                   ),
@@ -138,7 +137,7 @@ class _PresetState extends State<Preset> {
                                 .elementAt(keywords.length - index - 1));
                             setState(() {});
                           },
-                          icon: Icon(Icons.close),
+                          icon: const Icon(Icons.close),
                         ),
                       ),
                       // EDIT KEYWORD
@@ -152,7 +151,7 @@ class _PresetState extends State<Preset> {
                             await showDialog<void>(
                               context: context,
                               builder: (BuildContext context) => SimpleDialog(
-                                title: Text('Edit search word'),
+                                title: const Text('Edit search word'),
                                 children: [
                                   TextField(
                                       textAlign: TextAlign.center,
