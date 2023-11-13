@@ -9,7 +9,7 @@ import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/default_loading.dart';
 
 class Search extends StatefulWidget {
-  SearchPreset? searchPreset;
+  SearchPreset searchPreset;
   Search({super.key, required this.searchPreset});
 
   @override
@@ -19,15 +19,36 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   List<JobPreset> foundJobs = [];
   Map<String, int> jobMapper = {};
+  String searchText = 'Loading...';
+  bool searched = false;
+  bool displayLoading = true;
 
-  void fetchData() async {
+  void beginSearch() async {
+    if (searched) return;
+    searched = true;
+    if (widget.searchPreset.keywords.length == 0) {
+      searchText = 'Search preset has no search words';
+      displayLoading = false;
+      setState(() {});
+      return;
+    }
+    for (var i in widget.searchPreset.keywords) {
+      searchText = 'Now searching: ' + i;
+      searchKey(i);
+      setState(() {});
+      await searchKey(i);
+    }
+    displayLoading = false;
+  }
+
+  Future<void> searchKey(String word) async {
     // We'll need a more robust way to do this when we scrape from more websites
     // 1. Remove duplicates
     //  a. start working on duplicates once any website returns data
     //  b. If duplicate found, add url and compare post time and deadline
     List<Future<List<JobPreset>>> fetchers = [];
-    fetchers.add(scrapeAlfred('forrit'));
-    fetchers.add(scrapeTvinna('forrit'));
+    fetchers.add(scrapeAlfred(word));
+    fetchers.add(scrapeTvinna(word));
 
     for (var i in fetchers) {
       i.whenComplete(() async => addData(await i));
@@ -50,8 +71,8 @@ class _SearchState extends State<Search> {
         if (dupe.companyName == i.companyName) {
           // If duplicate, add url and check dates
           dupe.urls.addAll(i.urls);
-          // print(dupe.urls[0]);
-          // print(dupe.urls[1]);
+          print(dupe.urls[0]);
+          print(dupe.urls[1]);
           dupe.deadline ??= i.deadline;
           DateTime nullDestroyer = i.earliestPosting!; // DESTROY POSSIBLE NULL
           if (dupe.earliestPosting!.isAfter(nullDestroyer)) {
@@ -68,10 +89,25 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     if (foundJobs.isEmpty) {
-      fetchData();
+      beginSearch();
       return Scaffold(
         appBar: GlobalAppBar(),
-        body: DefaultLoading(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(searchText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                  )),
+              (() {
+                if (displayLoading) return DefaultLoading();
+                return SizedBox();
+              }())
+            ],
+          ),
+        ),
       );
     }
 

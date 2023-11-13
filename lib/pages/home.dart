@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  SearchPreset? selectedPreset;
+  SearchPreset selectedPreset = SearchPreset('None selected', [], []);
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,11 @@ class _HomeState extends State<Home> {
     final SearchPreset? search = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Presets()));
     setState(() {
-      selectedPreset = search;
+      if (search != null) {
+        selectedPreset = search;
+      } else {
+        selectedPreset = SearchPreset('None selected', [], []);
+      }
     });
   }
 
