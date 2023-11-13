@@ -19,6 +19,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  bool useLocalData = false;
   List<JobPreset> foundJobs = [];
   Map<String, int> jobMapper = {};
   String searchText = 'Loading...';
@@ -29,25 +30,27 @@ class _SearchState extends State<Search> {
   void beginSearch() async {
     if (searched) return;
     searched = true;
-    if (widget.searchPreset.keywords.length == 0) {
+    if (widget.searchPreset.keywords.isEmpty) {
       searchText = 'Search preset has no search words';
       displayLoading = false;
       setState(() {});
       return;
     }
     for (var i in widget.searchPreset.keywords) {
-      searchText = 'Now searching: ' + i;
+      print(i);
+      searchText = 'Now searching: $i';
       searchKey(i);
       setState(() {});
       await searchKey(i);
     }
     displayLoading = false;
+    searchText = 'Finished searching.';
   }
 
   Future<void> searchKey(String word) async {
     List<Future<List<JobPreset>>> fetchers = [];
-    fetchers.add(scrapeAlfred(word));
-    fetchers.add(scrapeTvinna(word));
+    fetchers.add(scrapeAlfred(word, useLocalData));
+    fetchers.add(scrapeTvinna(word, useLocalData));
 
     for (var i in fetchers) {
       i.whenComplete(() async => addData(await i));
@@ -104,7 +107,11 @@ class _SearchState extends State<Search> {
                   )),
               (() {
                 if (displayLoading) return DefaultLoading();
-                return SizedBox();
+                return Text('No results',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                    ));
               }())
             ],
           ),
@@ -117,90 +124,107 @@ class _SearchState extends State<Search> {
       body: Container(
         color: Color.fromARGB(255, 0, 0, 0),
         child: SafeArea(
-          child: ListView.builder(
-            itemCount: foundJobs.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Container(
-                  padding: EdgeInsets.all(6),
-                  decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.elliptical(8, 8)),
-                          side: BorderSide(color: Colors.black)),
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(foundJobs.elementAt(index).jobName,
-                            style: TextStyle(fontSize: 16)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(foundJobs.elementAt(index).companyName,
-                                style: TextStyle(fontSize: 16)),
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+          child: Column(
+            children: [
+              SizedBox(
+                  height: 20,
+                  child: Text(searchText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white))),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: foundJobs.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        padding: EdgeInsets.all(6),
+                        decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.elliptical(8, 8)),
+                                side: BorderSide(color: Colors.black)),
+                            color: Color.fromARGB(255, 255, 255, 255)),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(foundJobs.elementAt(index).jobName,
+                                  style: TextStyle(fontSize: 16)),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  IconButton(
-                                    constraints: BoxConstraints(maxHeight: 32),
-                                    onPressed: (() {
-                                      if (selectedIndex == index) {
-                                        selectedIndex = -1;
-                                      } else {
-                                        selectedIndex = index;
-                                      }
-                                      setState(() {});
-                                    }),
-                                    icon: (() {
-                                      if (index == selectedIndex) {
-                                        return Icon(Icons.arrow_drop_up);
-                                      } else {
-                                        return Icon(Icons.arrow_drop_down);
-                                      }
-                                    }()),
-                                  ),
+                                  Text(foundJobs.elementAt(index).companyName,
+                                      style: TextStyle(fontSize: 16)),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          constraints:
+                                              BoxConstraints(maxHeight: 32),
+                                          onPressed: (() {
+                                            if (selectedIndex == index) {
+                                              selectedIndex = -1;
+                                            } else {
+                                              selectedIndex = index;
+                                            }
+                                            setState(() {});
+                                          }),
+                                          icon: (() {
+                                            if (index == selectedIndex) {
+                                              return Icon(Icons.arrow_drop_up);
+                                            } else {
+                                              return Icon(
+                                                  Icons.arrow_drop_down);
+                                            }
+                                          }()),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                        (() {
-                          if (index == selectedIndex) {
-                            print('Index');
-                            return SafeArea(
-                              child: ListView.builder(
-                                itemCount:
-                                    foundJobs.elementAt(index).urls.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, urlIndex) {
-                                  return RichText(
-                                    text: TextSpan(
-                                      text: foundJobs
+                              (() {
+                                if (index == selectedIndex) {
+                                  print('Index');
+                                  return SafeArea(
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: foundJobs
                                           .elementAt(index)
-                                          .urls[urlIndex],
-                                      style: TextStyle(color: Colors.blue),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          launchUrl(Uri.parse(foundJobs
-                                              .elementAt(index)
-                                              .urls[urlIndex]));
-                                        },
+                                          .urls
+                                          .length,
+                                      itemBuilder: (context, urlIndex) {
+                                        return RichText(
+                                          text: TextSpan(
+                                            text: foundJobs
+                                                .elementAt(index)
+                                                .urls[urlIndex],
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                launchUrl(Uri.parse(foundJobs
+                                                    .elementAt(index)
+                                                    .urls[urlIndex]));
+                                              },
+                                          ),
+                                        );
+                                      },
                                     ),
                                   );
-                                },
-                              ),
-                            );
-                          }
-                          return Container();
-                        }())
-                      ]),
+                                }
+                                return Container();
+                              }())
+                            ]),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           ),
         ),
       ),

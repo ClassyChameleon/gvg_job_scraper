@@ -7,20 +7,27 @@ import 'package:gvg_job_scraper/util.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 
-Future<List<JobPreset>> scrapeTvinna(String keyword) async {
+Future<List<JobPreset>> scrapeTvinna(String keyword, bool useLocalData) async {
   List<JobPreset> results = [];
   // Response response = await get(Uri.parse('https://www.tvinna.is/wp-json/'));
   // Response response = await get(Uri.parse('https://www.tvinna.is/wp-json/wp/v2'));
-
+  String result = '';
   // Fetch from website
-  // Response response = await get(Uri.parse('https://www.tvinna.is/?s=$keyword'));
-  // String result = response.body;
-
-  String result = await rootBundle.loadString('assets/tvinna.txt');
+  if (useLocalData) {
+    result = await rootBundle.loadString('assets/tvinna.txt');
+  } else {
+    Response response =
+        await get(Uri.parse('https://www.tvinna.is/?s=$keyword'));
+    result = response.body;
+  }
 
   // print('=========================================');
   // print('                PRINT');
   // print('=========================================');
+  if (!result.contains('job-listing')) {
+    // If no jobs exist with this keyword
+    return results;
+  }
   result = result.substring(result.indexOf('job-listing'));
   result = result.substring(0, result.indexOf('</ul>'));
   // print(result);
