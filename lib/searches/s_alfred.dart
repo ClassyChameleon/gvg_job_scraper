@@ -22,7 +22,7 @@ Future<List<JobPreset>> scrapeAlfred(String keyword) async {
     results.add(JobPreset(
         i['brand']['name'],
         i['title'],
-        ["alfred.is/starf/$slug"],
+        ["https://www.alfred.is/starf/$slug"],
         DateTime.parse(i['created']),
         i['deadline'] == null ? null : DateTime.parse(i['deadline'])));
     //print(i['title']);

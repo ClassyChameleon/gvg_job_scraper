@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gvg_job_scraper/classes/job_preset.dart';
 import 'package:gvg_job_scraper/classes/search_preset.dart';
@@ -7,6 +8,7 @@ import 'package:gvg_job_scraper/searches/s_alfred.dart';
 import 'package:gvg_job_scraper/searches/s_tvinna.dart';
 import 'package:gvg_job_scraper/widgets/app_bar.dart';
 import 'package:gvg_job_scraper/widgets/default_loading.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Search extends StatefulWidget {
   SearchPreset searchPreset;
@@ -22,6 +24,7 @@ class _SearchState extends State<Search> {
   String searchText = 'Loading...';
   bool searched = false;
   bool displayLoading = true;
+  int selectedIndex = -1;
 
   void beginSearch() async {
     if (searched) return;
@@ -42,10 +45,6 @@ class _SearchState extends State<Search> {
   }
 
   Future<void> searchKey(String word) async {
-    // We'll need a more robust way to do this when we scrape from more websites
-    // 1. Remove duplicates
-    //  a. start working on duplicates once any website returns data
-    //  b. If duplicate found, add url and compare post time and deadline
     List<Future<List<JobPreset>>> fetchers = [];
     fetchers.add(scrapeAlfred(word));
     fetchers.add(scrapeTvinna(word));
@@ -70,9 +69,11 @@ class _SearchState extends State<Search> {
         JobPreset dupe = foundJobs.elementAt(index);
         if (dupe.companyName == i.companyName) {
           // If duplicate, add url and check dates
-          dupe.urls.addAll(i.urls);
-          print(dupe.urls[0]);
-          print(dupe.urls[1]);
+          if (!dupe.urls.contains(i.urls[0])) {
+            dupe.urls.addAll(i.urls);
+          }
+          // print(dupe.urls[0]);
+          // print(dupe.urls[1]);
           dupe.deadline ??= i.deadline;
           DateTime nullDestroyer = i.earliestPosting!; // DESTROY POSSIBLE NULL
           if (dupe.earliestPosting!.isAfter(nullDestroyer)) {
@@ -146,14 +147,56 @@ class _SearchState extends State<Search> {
                                 children: [
                                   IconButton(
                                     constraints: BoxConstraints(maxHeight: 32),
-                                    onPressed: onPressed,
-                                    icon: Icon(Icons.arrow_drop_down),
+                                    onPressed: (() {
+                                      if (selectedIndex == index) {
+                                        selectedIndex = -1;
+                                      } else {
+                                        selectedIndex = index;
+                                      }
+                                      setState(() {});
+                                    }),
+                                    icon: (() {
+                                      if (index == selectedIndex) {
+                                        return Icon(Icons.arrow_drop_up);
+                                      } else {
+                                        return Icon(Icons.arrow_drop_down);
+                                      }
+                                    }()),
                                   ),
                                 ],
                               ),
                             )
                           ],
-                        )
+                        ),
+                        (() {
+                          if (index == selectedIndex) {
+                            print('Index');
+                            return SafeArea(
+                              child: ListView.builder(
+                                itemCount:
+                                    foundJobs.elementAt(index).urls.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, urlIndex) {
+                                  return RichText(
+                                    text: TextSpan(
+                                      text: foundJobs
+                                          .elementAt(index)
+                                          .urls[urlIndex],
+                                      style: TextStyle(color: Colors.blue),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          launchUrl(Uri.parse(foundJobs
+                                              .elementAt(index)
+                                              .urls[urlIndex]));
+                                        },
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          return Container();
+                        }())
                       ]),
                 ),
               );
@@ -163,6 +206,4 @@ class _SearchState extends State<Search> {
       ),
     );
   }
-
-  void onPressed() {}
 }
