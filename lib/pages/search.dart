@@ -47,8 +47,8 @@ class _SearchState extends State<Search> {
 
   Future<void> searchKey(String word) async {
     List<Future<List<JobPreset>>> fetchers = [];
-    fetchers.add(scrapeAlfred(word, useLocalData));
-    fetchers.add(scrapeTvinna(word, useLocalData));
+    fetchers.add(scrapeAlfred(word.trim().toLowerCase(), useLocalData));
+    fetchers.add(scrapeTvinna(word.trim().toLowerCase(), useLocalData));
 
     for (var i in fetchers) {
       i.whenComplete(() async => addData(await i));

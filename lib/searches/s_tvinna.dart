@@ -1,15 +1,20 @@
 import 'package:flutter/services.dart';
 import 'package:gvg_job_scraper/classes/job_preset.dart';
 import 'package:http/http.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<List<JobPreset>> scrapeTvinna(String keyword, bool useLocalData) async {
   List<JobPreset> results = [];
   // Response response = await get(Uri.parse('https://www.tvinna.is/wp-json/'));
   // Response response = await get(Uri.parse('https://www.tvinna.is/wp-json/wp/v2'));
   String result = '';
-  // Fetch from website
-  if (useLocalData) {
-    result = await rootBundle.loadString('assets/tvinna.txt');
+  // Fetch from local if on the web.
+  if (useLocalData || kIsWeb) {
+    try {
+      rootBundle.loadString('assets/tvinna$keyword.txt');
+    } catch (e) {
+      result = await rootBundle.loadString('assets/tvinna.txt');
+    }
   } else {
     Response response =
         await get(Uri.parse('https://www.tvinna.is/?s=$keyword'));

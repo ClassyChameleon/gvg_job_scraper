@@ -16,9 +16,7 @@ class _HomeState extends State<Home> {
   List<SearchPreset> presetList = [
     SearchPreset('Web developer', ['html', 'css', 'javascript'],
         ['alfred.is', 'tvinna.is']),
-    SearchPreset('Programmer', ['java', 'php', 'javascript'],
-        ['alfred.is', 'tvinna.is']),
-    SearchPreset('Database Manager', ['SQL', 'Postgres', 'javascript'],
+    SearchPreset('Database Manager', ['SQL', 'database', 'javascript'],
         ['alfred.is', 'tvinna.is']),
     SearchPreset(
         'Demo for mid-search adds',
