@@ -11,7 +11,18 @@ Future<List<JobPreset>> scrapeTvinna(String keyword, bool useLocalData) async {
   // Fetch from local if on the web.
   if (useLocalData || kIsWeb) {
     try {
-      rootBundle.loadString('assets/tvinna$keyword.txt');
+      List<String> acceptedKeywords = [
+        'css',
+        'database',
+        'html',
+        'javascript',
+        'sql'
+      ];
+      if (acceptedKeywords.contains(keyword)) {
+        result = await rootBundle.loadString('assets/tvinna$keyword.txt');
+      } else {
+        result = await rootBundle.loadString('assets/tvinna.txt');
+      }
     } catch (e) {
       result = await rootBundle.loadString('assets/tvinna.txt');
     }
