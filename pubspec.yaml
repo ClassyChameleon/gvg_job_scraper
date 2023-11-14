@@ -23,3 +23,8 @@ flutter:
   assets:
     - assets/alfred.json
     - assets/tvinna.txt
+    - assets/tvinnacss.txt
+    - assets/tvinnadatabase.txt
+    - assets/tvinnahtml.txt
+    - assets/tvinnajavascript.txt
+    - assets/tvinnasql.txt
