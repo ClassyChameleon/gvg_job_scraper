@@ -1,3 +1,6 @@
 # gvg_job_scraper
 
-A new Flutter project.
+The flutter code.
+
+# File organization
+
