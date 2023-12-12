@@ -1,6 +1,10 @@
 # gvg_job_scraper
-App for searching for jobs on Icelandic websites. <br>
-Web version of project, hosted by Github: https://classychameleon.github.io/
+> App for searching for jobs on Icelandic websites. <br>
+
+Web version of project, hosted by Github: https://classychameleon.github.io/ <br>
+This prototype is only a proof of concept and is being developed further in a private repository
+
+### Small talk
 
 I used Flutter mainly to try out the tech and see what I think about it. <br>
 I like Flutter because of it's simplicity and how easy it is to create something that looks somewhat decent. <br>
