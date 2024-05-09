@@ -15,8 +15,8 @@ class Preset extends StatefulWidget {
 class _PresetState extends State<Preset> {
   Set<String> keywords = {};
   List<ValueItem> websites = <ValueItem>[
-    const ValueItem(label: 'alfred.is'),
-    const ValueItem(label: 'tvinna.is'),
+    const ValueItem(label: 'alfred.is', value: 'alfred.is'),
+    const ValueItem(label: 'tvinna.is', value: 'tvinna.is'),
   ];
   List<ValueItem> selectedWebsites = [];
   final titleTextController = TextEditingController();
@@ -35,17 +35,19 @@ class _PresetState extends State<Preset> {
   Widget build(BuildContext context) {
     if (startedFlag) {
       startedFlag = false;
-      titleTextController.text = widget.searchPreset!.name;
-      for (String i in widget.searchPreset!.keywords) {
-        keywords.add(i);
-      }
-      for (String i in widget.searchPreset!.websites) {
-        selectedWebsites.add(
-          ValueItem(label: i),
-        );
-      }
-      if (selectedWebsites.length != websites.length) {
-        selectAllWebsites = false;
+      if (widget.searchPreset != null) {
+        titleTextController.text = widget.searchPreset!.name;
+        for (String i in widget.searchPreset!.keywords) {
+          keywords.add(i);
+        }
+        for (String i in widget.searchPreset!.websites) {
+          selectedWebsites.add(
+            ValueItem(label: i, value: i),
+          );
+        }
+        if (selectedWebsites.length != websites.length) {
+          selectAllWebsites = false;
+        }
       }
     }
     return Scaffold(
