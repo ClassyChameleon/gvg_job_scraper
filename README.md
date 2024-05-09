@@ -1,5 +1,5 @@
 # gvg_job_scraper
-> App for searching for jobs on Icelandic websites. <br>
+> Searches for jobs on Icelandic websites. <br>
 
 Web version of project, hosted by Github: https://classychameleon.github.io/ <br>
 This prototype is only a proof of concept and is being developed further in a private repository
